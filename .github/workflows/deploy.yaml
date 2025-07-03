@@ -15,14 +15,14 @@ jobs:
                 password: ${{ secrets.PASSWORD }}
                 port: ${{ secrets.PORT }}
                 script: |
-                      cd /var/www/financer-api
+                      cd /var/www/carango-api
                       git stash
                       git pull origin main
                       npm i
                       npx prisma migrate deploy
                       npx prisma generate
                       npm run build
-                      pm2 restart financer-api
+                      pm2 restart carango-api
 
 
 

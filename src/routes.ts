@@ -6,7 +6,7 @@ const routes = Router();
 
 routes.get('/', (request: Request, response: Response) => {
 	response.status(200).send({
-		name: 'Financer',
+		name: 'Carango',
 		teste: 1,
 		version: project.version
 	});

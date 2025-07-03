@@ -12,7 +12,7 @@ app.use(routes);
 
 if(process.env.NODE_ENV !== "tests") {
 	app.listen(process.env.PORT || 8000, function (){
-		console.log("Financer running on port %d", 7011);
+		console.log("Carango running on port %d", 7011);
 	});
 }
 

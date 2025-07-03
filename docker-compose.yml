@@ -4,7 +4,7 @@ services:
     container_name: mysql-container
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=financer_test
+      - MYSQL_DATABASE=carango_test
     ports:
       - "3306:33070nz"
     volumes:
