@@ -11,7 +11,8 @@
 		"test:watch": "vitest --ui",
 		"test:unit": "vitest run --dir src",
 		"test:e2e": "vitest run --dir __tests__",
-		"migrate": "npx prisma migrate dev"
+		"migrate": "npx prisma migrate dev",
+		"fix-ssl": "set NODE_TLS_REJECT_UNAUTHORIZED=0"
 	},
 	"keywords": [],
 	"author": "",

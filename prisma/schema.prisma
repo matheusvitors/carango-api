@@ -14,10 +14,16 @@ datasource db {
 }
 
 model Usuario {
-    id        String   @id @unique
-    nome      String
-    username  String   @unique
-    password  String
-    email     String   @unique
+    id       String @id @unique
+    nome     String
+    username String @unique
+    password String
+    email    String @unique
 }
 
+model Carro {
+    id     String @id @unique
+    placa  String @unique
+    modelo String
+    marca  String
+}
