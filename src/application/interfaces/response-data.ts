@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "@/infra/types";
+import { HttpStatusCode } from "@/application/types";
 
 export interface ResponseData {
 	status: HttpStatusCode;
