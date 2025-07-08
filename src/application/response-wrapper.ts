@@ -36,8 +36,8 @@ export const unsupportMediaType = (): ResponseData => {
 	return { status: 415 };
 }
 
-export const unprocessableEntity = (message: string): ResponseData => {
-	return { status: 422, body: { message } };
+export const unprocessableEntity = (errors: object): ResponseData => {
+	return { status: 422, body: { errors } };
 }
 
 export const tooManyRequests = (): ResponseData => {

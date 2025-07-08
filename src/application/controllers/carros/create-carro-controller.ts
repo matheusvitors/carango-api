@@ -1,6 +1,5 @@
-import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
-import { serverError, unprocessableEntity } from "@/application/response-wrapper";
+import { conflict, created, serverError, unprocessableEntity } from "@/application/response-wrapper";
 import { Carro } from "@/core/models";
 import { carroValidator } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
@@ -22,21 +21,28 @@ export const createCarroController = async (params: CreateCarroControllerParams)
 		}
 
 		const validationResult = await carroValidator(carro);
-		console.log('ERROR',validationResult.error?.errors);
 
 		if(validationResult.error){
-			const errors = [];
+			const errors: object = {};
 			validationResult.error.errors.forEach(error => {
-				errors.push({
+				Object.assign(errors, {
 					[error.path[0]]: error.message
 				})
 			})
 
-			return unprocessableEntity()
+			return unprocessableEntity(errors)
 		}
 
+		const result = await repository.find!('placa', carro.placa);
 
-		return serverError(null);
+		if(result){
+			return conflict('Placa já existente!');
+		}
+
+		await repository.create(carro);
+
+		return created();
+
 	} catch (error) {
 		return serverError(error);
 	}

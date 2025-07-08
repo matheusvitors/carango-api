@@ -24,11 +24,11 @@ describe('Create Carro Controller', () => {
 				marca: 'fiat',
 		}, repository});
 
-		expect(response.status).toEqual(200);
+		expect(response.status).toEqual(201);
 		expect(repository.data.length).toEqual(2);
 	});
 
-	it('should return 422 if pass invalid data ', async () => {
+	it('should return 422 if pass invalid two or more data ', async () => {
 		const response = await createCarroController({
 			input: {
 				placa: 'jac9876',
@@ -37,7 +37,8 @@ describe('Create Carro Controller', () => {
 		}, repository});
 
 		expect(response.status).toEqual(422);
-		expect(response.body.content.message).toEqual('O modelo é obrigatório');
+		expect(response.body.errors.marca).toEqual('A marca é obrigatória');
+		expect(response.body.errors.modelo).toEqual('O modelo é obrigatório');
 	});
 
 	it('should return 422 if pass incorrect placa format ', async () => {
@@ -49,7 +50,7 @@ describe('Create Carro Controller', () => {
 		}, repository});
 
 		expect(response.status).toEqual(422);
-		expect(response.body.content.message).toEqual('A placa está com o formato incorreto!');
+		expect(response.body.errors.placa).toEqual('A placa está com o formato incorreto!');
 	});
 
 	it('should return 409 if pass existent placa ', async () => {
@@ -61,7 +62,7 @@ describe('Create Carro Controller', () => {
 		}, repository});
 
 		expect(response.status).toEqual(409);
-		expect(response.body.content.message).toEqual('Placa cadastrada anteriormente!');
+		expect(response.body.message).toEqual('Placa já existente!');
 	});
 
 	it('should return 500 if throw exception ', async () => {
