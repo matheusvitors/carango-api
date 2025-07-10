@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 describe('Create Carro Controller', () => {
 
-	const repository = new InMemoryRepository<Carro>();
+	const repository = new InMemoryRepository<Carro, Carro>();
 
 	beforeAll(() => {
 		repository.create({

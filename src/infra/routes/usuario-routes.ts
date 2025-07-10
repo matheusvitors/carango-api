@@ -9,7 +9,7 @@ const path = '/users'
 
 router.get(`${path}`, async (request: Request, response: Response) => {
 	const responseData = await listUsuariosController(repository);
-	return route({ response, responseData });
+	route({ response, responseData });
 })
 
 router.get(`${path}/:id`, async (request: Request, response: Response) => {
@@ -17,7 +17,7 @@ router.get(`${path}/:id`, async (request: Request, response: Response) => {
 		repository,
 		id: request.params.id
 	});
-	return route({ response, responseData });
+	route({ response, responseData });
 })
 
-export { router as usuarioRoutes}
+export { router as usuarioRoutes }

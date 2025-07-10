@@ -2,7 +2,7 @@ import { describe, beforeAll, it, expect, afterAll } from "vitest";
 ;import supertest from "supertest";
 import { app } from "@/server";
 import { usuarioPrismaRepository } from "@/infra/database/prisma";
-import { databaseClient } from "@/infra/database/client";
+import { database } from "@/infra/database/client";
 import { SECRET } from "@/infra/config/environment";
 import { jwt } from "@/infra/adapters/jwt";
 
@@ -13,7 +13,7 @@ describe('Usuario - Integration Test', () => {
 	const token = jwt.encode({ payload: {id: 'abc'}});
 
 	beforeAll(async () => {
-		await databaseClient.usuario.deleteMany({});
+		await database.usuario.deleteMany({});
 		await repository.create({
 			id: 'abc',
 			nome: 'Fulano',
@@ -31,7 +31,7 @@ describe('Usuario - Integration Test', () => {
 	});
 
 	afterAll(async () => {
-		await databaseClient.usuario.deleteMany({});
+		await database.usuario.deleteMany({});
 	})
 
 	it('should list usuarios', async () => {
@@ -54,8 +54,7 @@ describe('Usuario - Integration Test', () => {
 	it('should not find the usuario', async () => {
 		const response = await supertest(app).get(`/users/zyz`)
 		.set({ authorization: `Bearer ${token}` });
-		console.log('body', response.body);
-		console.log('status', response.statusCode);
+
 		expect(response.statusCode).toEqual(404);
 	});
 

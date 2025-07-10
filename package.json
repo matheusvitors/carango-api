@@ -7,7 +7,7 @@
 		"build": "tsup src",
 		"dev": "dotenv -e .env nodemon src/server.ts",
 		"upgrade": "ncu -u && npm i",
-		"test": "dotenv -e .env.test vitest run --coverage",
+		"test": "dotenv -e .env.tests vitest run --coverage",
 		"test:watch": "vitest --ui",
 		"test:unit:watch": "vitest --dir src --ui",
 		"test:e2e:watch": "vitest --dir __tests__ --ui",

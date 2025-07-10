@@ -1,3 +1,5 @@
 export * from './create-carro-controller'
+export * from './edit-carro-controller'
 export * from './get-carro-controller'
 export * from './list-carros-controller'
+export * from './remove-carro-controller'

@@ -4,7 +4,7 @@ interface Entity {
 	id: string | number;
 }
 
-export class InMemoryRepository<T extends Entity> implements Repository<T> {
+export class InMemoryRepository<T extends Entity, DTO extends Entity> implements Repository<T, DTO> {
 	public data: T[] = [];
 
 	constructor(data?: T[]) {
@@ -78,5 +78,9 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		if (index !== -1) {
 			this.data.splice(index, 1);
 		}
+	}
+
+	async removeAll(): Promise<void> {
+		this.data = []
 	}
 }

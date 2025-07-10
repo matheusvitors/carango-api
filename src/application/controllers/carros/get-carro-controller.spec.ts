@@ -4,7 +4,7 @@ import { Carro } from "@/core/models";
 import { getCarroController } from "@/application/controllers/carros";
 
 describe('Get List Controller', () => {
-	const repository = new InMemoryRepository<Carro>();
+	const repository = new InMemoryRepository<Carro, Carro>();
 
 	beforeAll(() => {
 		repository.create({

@@ -1,12 +1,12 @@
 import { Repository, ResponseData } from "@/application/interfaces";
-import { conflict, created, serverError, unprocessableEntity } from "@/application/response-wrapper";
 import { Carro } from "@/core/models";
 import { carroValidator } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
+import { unprocessableEntity, conflict, created, serverError } from "@/infra/adapters/response-wrapper";
 
 interface CreateCarroControllerParams {
 	input: Omit<Carro, 'id'>;
-	repository: Repository<Carro>
+	repository: Repository<Carro, Carro>
 }
 
 export const createCarroController = async (params: CreateCarroControllerParams): Promise<ResponseData> => {
@@ -17,20 +17,14 @@ export const createCarroController = async (params: CreateCarroControllerParams)
 			id: newID(),
 			placa: input.placa,
 			modelo: input.modelo,
-			marca: input.marca
+			marca: input.marca,
+			usuarioId: input.usuarioId
 		}
 
-		const validationResult = await carroValidator(carro);
+		const errors = await carroValidator(carro);
 
-		if(validationResult.error){
-			const errors: object = {};
-			validationResult.error.errors.forEach(error => {
-				Object.assign(errors, {
-					[error.path[0]]: error.message
-				})
-			})
-
-			return unprocessableEntity(errors)
+		if(errors){
+			return unprocessableEntity(errors as object)
 		}
 
 		const result = await repository.find!('placa', carro.placa);

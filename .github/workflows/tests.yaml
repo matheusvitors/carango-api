@@ -8,7 +8,7 @@ jobs:
   unit-test:
     runs-on: ubuntu-latest
     env:
-        NODE_ENV: tests
+        NODE_ENV: test
         PORT: 8080
         DATABASE_URL: "mysql://test:test@localhost:0000/test"
         AUTHENTICATION: true
@@ -40,7 +40,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     env:
-        NODE_ENV: tests
+        NODE_ENV: test
         PORT: 8080
         DATABASE_URL: "mysql://root:password@localhost:3306/e2e_test"
         AUTHENTICATION: true
