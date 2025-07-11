@@ -2,8 +2,8 @@ export interface Abastecimento {
 	id: string;
 	carroId: string;
 	kmInicial: number;
-	kmFinal?: number;
-	litros?: number;
+	kmFinal: number;
+	litros: number;
 	precoCombustivel: number;
 	combustivel: Combustivel;
 	tipoCombustivel: TipoCombustivel;

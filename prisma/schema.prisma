@@ -23,10 +23,23 @@ model Usuario {
 }
 
 model Carro {
-    id        String  @id @unique
-    placa     String  @unique
-    modelo    String
-    marca     String
-    usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    usuarioId String
+    id            String          @id @unique
+    placa         String          @unique
+    modelo        String
+    marca         String
+    usuario       Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    usuarioId     String
+    Abastecimento Abastecimento[]
+}
+
+model Abastecimento {
+    id               String @id @unique
+    kmInicial        Int
+    kmFinal          Int
+    litros           Int
+    precoCombustivel Int
+    combustivel      String
+    tipoCombustivel  String
+    carroId          String
+    carro            Carro  @relation(fields: [carroId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
