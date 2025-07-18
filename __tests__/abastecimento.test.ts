@@ -79,7 +79,7 @@ describe('Abastecimento - Integration Test', () => {
 
 	it('should get the refueling', async () => {
 		const response = await supertest(app)
-		.get(`${path}/abc/abastecimentos/456`)
+		.get(`${path}/123/abastecimentos/456`)
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(200);
@@ -87,7 +87,7 @@ describe('Abastecimento - Integration Test', () => {
 
 	it('should not find the refueling', async () => {
 		const response = await supertest(app)
-		.get(`${path}/abc/abastecimentos/oigfg`)
+		.get(`${path}/zzz/abastecimentos/oigfg`)
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(404)
@@ -97,7 +97,12 @@ describe('Abastecimento - Integration Test', () => {
 		const response = await supertest(app)
 		.post(`${path}/abc/abastecimentos`)
 		.send({
-
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum"
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -108,44 +113,131 @@ describe('Abastecimento - Integration Test', () => {
 		const response = await supertest(app)
 		.post(`${path}/abc/abastecimentos`)
 		.send({
-
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "água",
+			tipoCombustivel: "incomum"
 		})
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(422);
-		expect(response.body.response.errors.marca).toEqual('A marca é obrigatória');
-		expect(response.body.response.errors.modelo).toEqual('O modelo é obrigatório');
+		expect(response.body.response.errors.combustivel).toEqual('O combustível é inválido');
+		expect(response.body.response.errors.tipoCombustivel).toEqual('O tipo do combustível é inválido');
 	});
 
-	it('should return 404 if carroId not found', () => {
+	it('should return 404 if carroId not found', async () => {
+		const response = await supertest(app)
+		.post(`${path}/zzz/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(404);
 	});
 
-	it('should return 422 if km final is less than km inicial', () => {
+	it('should return 422 if km final is less than km inicial', async () => {
+		const response = await supertest(app)
+		.post(`${path}/abc/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 50,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.combustivel).toEqual('O km final é menor que o km inicial');
 	});
 
-	it('should return 422 if litros is equal 0', () => {
+	it('should return 422 if litros is equal 0', async () => {
+		const response = await supertest(app)
+		.post(`${path}/abc/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 0,
+			precoCombustivel: 2.00,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.litros).toEqual('A quantidade de litros deve ser maior que zero');
 	});
 
-	it('should return 422 if precoCombustivel is equal 0', () => {
+	it('should return 422 if precoCombustivel is equal 0', async () => {
+		const response = await supertest(app)
+		.post(`${path}/abc/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 10,
+			precoCombustivel:0,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.litros).toEqual('O preço do combustível deve ser maior que zero');
 	});
 
-	it('should return 422 if combustivel is different from gasolina or alcool', () => {
+	it('should return 422 if combustivel is different from gasolina or alcool', async () => {
+		const response = await supertest(app)
+		.post(`${path}/abc/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 10,
+			precoCombustivel:0,
+			combustivel: "água",
+			tipoCombustivel: "comum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.combustivel).toEqual('O combustível é inválido');
 	});
 
-	it('should return 422 if tipoCombustivel is different from comum or aditivada', () => {
+	it('should return 422 if tipoCombustivel is different from comum or aditivada', async () => {
+		const response = await supertest(app)
+		.post(`${path}/abc/abastecimentos`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 10,
+			precoCombustivel:0,
+			combustivel: "gasolina",
+			tipoCombustivel: "incomum"
+		})
+		.set({ authorization: `Bearer ${token}`});
 
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.tipoCombustivel).toEqual('O tipo do combustível é inválido');
 	});
 
 	it('should edit a refueling', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abc/abastecimentos`)
+		.put(`${path}/abc/abastecimentos/456`)
 		.send({
-
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "alcool",
+			tipoCombustivel: "comum"
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -153,6 +245,24 @@ describe('Abastecimento - Integration Test', () => {
 	});
 
 	it('should return 422 if pass invalid two or more data ', async () => {
+		const response = await supertest(app)
+		.put(`${path}/abc/abastecimentos/456`)
+		.send({
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.00,
+			combustivel: "água",
+			tipoCombustivel: "incomum"
+		})
+		.set({ authorization: `Bearer ${token}`});
+
+		expect(response.status).toEqual(422);
+		expect(response.body.response.errors.combustivel).toEqual('O combustível é inválido');
+		expect(response.body.response.errors.tipoCombustivel).toEqual('O tipo do combustível é inválido');
+	});
+
+	it('should return 404 if carroId not found on edit', async () => {
 		const response = await supertest(app)
 		.put(`${path}/abc/abastecimentos`)
 		.send({
@@ -164,32 +274,28 @@ describe('Abastecimento - Integration Test', () => {
 		})
 		.set({ authorization: `Bearer ${token}`});
 
-		expect(response.status).toEqual(422);
-		expect(response.body.response.errors.marca).toEqual('A marca é obrigatória');
-		expect(response.body.response.errors.modelo).toEqual('O modelo é obrigatório');
-	});
 
-	it('should return 404 if carroId not found on edit', () => {
+		expect(response.status).toEqual(404);
 
 	});
 
-	it('should return 422 if km final is less than km inicial on edit', () => {
+	it('should return 422 if km final is less than km inicial on edit', async () => {
 
 	});
 
-	it('should return 422 if litros is equal 0 on edit', () => {
+	it('should return 422 if litros is equal 0 on edit', async () => {
 
 	});
 
-	it('should return 422 if precoCombustivel is equal 0 on edit', () => {
+	it('should return 422 if precoCombustivel is equal 0 on edit', async () => {
 
 	});
 
-	it('should return 422 if combustivel is different from gasolina or alcool on edit', () => {
+	it('should return 422 if combustivel is different from gasolina or alcool on edit', async () => {
 
 	});
 
-	it('should return 422 if tipoCombustivel is different from comum or aditivada on edit', () => {
+	it('should return 422 if tipoCombustivel is different from comum or aditivada on edit', async () => {
 
 	});
 
