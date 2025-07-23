@@ -33,13 +33,14 @@ model Carro {
 }
 
 model Abastecimento {
-    id               String @id @unique
+    id               String   @id @unique
     kmInicial        Int
     kmFinal          Int
     litros           Int
     precoCombustivel Int
     combustivel      String
     tipoCombustivel  String
+    data             DateTime
     carroId          String
-    carro            Carro  @relation(fields: [carroId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    carro            Carro    @relation(fields: [carroId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

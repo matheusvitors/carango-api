@@ -1,7 +1,9 @@
-import { Repository } from "@/application/interfaces";
+import { AbastecimentoDTO } from "@/application/dto";
+import { FilterParams, Repository } from "@/application/interfaces";
 import { Abastecimento } from "@/core/models";
 import { database } from "@/infra/database/client";
 import { transform } from "@/utils/transformers";
+import { Prisma } from "@prisma/client";
 
 export const abastecimentoPrismaRepository: Repository<Abastecimento, Abastecimento> = {
 	list: async (): Promise<Abastecimento[]> => {
@@ -39,11 +41,30 @@ export const abastecimentoPrismaRepository: Repository<Abastecimento, Abastecime
 			return null;
 		}
 
-			return transform.toAbastecimento(data);
+		return transform.toAbastecimento(data);
 	},
 
-	filter: async (params: any): Promise<Abastecimento[] | null> => {
-		throw new Error("Function not implemented.");
+	filter: async (params: FilterParams<AbastecimentoDTO>[]): Promise<Abastecimento[] | null> => {
+		const where: Prisma.AbastecimentoWhereInput  = params.reduce(
+			(obj, item) => Object.assign(obj, { [item.field]: item.value }), {});
+
+		try {
+			const data = await database.abastecimento.findMany({
+				where,
+				orderBy: [
+					{ data: 'desc'},
+				]
+			});
+
+			const abastecimentos: Abastecimento[] = data.map(abastecimento => {
+				return transform.toAbastecimento(abastecimento);
+			})
+
+			return abastecimentos;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	create: async (input: Abastecimento): Promise<void> => {

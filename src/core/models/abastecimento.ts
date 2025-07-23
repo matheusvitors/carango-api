@@ -7,6 +7,7 @@ export interface Abastecimento {
 	precoCombustivel: number;
 	combustivel: Combustivel;
 	tipoCombustivel: TipoCombustivel;
+	data: Date;
 }
 
 export type Combustivel = 'gasolina' | 'alcool';
