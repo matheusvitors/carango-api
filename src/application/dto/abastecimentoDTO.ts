@@ -1,12 +1,12 @@
 export interface AbastecimentoDTO {
-	id: string;
+	id?: string;
 	carroId: string;
 	kmInicial: number;
 	kmFinal: number;
 	litros: number;
 	precoCombustivel: number;
 	combustivel: string;
-	tipoCombustivel: string;
+	tipoCombustivel?: string;
 	data: Date;
 }
 

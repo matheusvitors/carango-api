@@ -21,7 +21,7 @@ export const createCarroController = async (params: CreateCarroControllerParams)
 			usuarioId: input.usuarioId
 		}
 
-		const errors = await carroValidator(carro);
+		const errors = carroValidator(carro);
 
 		if(errors){
 			return unprocessableEntity(errors as object)

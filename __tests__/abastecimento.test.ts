@@ -46,7 +46,8 @@ describe.skip('Abastecimento - Integration Test', () => {
 			litros: 5,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date()
 		})
 
 		await repository.create({
@@ -57,7 +58,8 @@ describe.skip('Abastecimento - Integration Test', () => {
 			litros: 20,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date()
 		})
 
 	})

@@ -39,7 +39,7 @@ model Abastecimento {
     litros           Int
     precoCombustivel Int
     combustivel      String
-    tipoCombustivel  String
+    tipoCombustivel  String?
     data             DateTime
     carroId          String
     carro            Carro    @relation(fields: [carroId], references: [id], onDelete: Cascade, onUpdate: Cascade)
