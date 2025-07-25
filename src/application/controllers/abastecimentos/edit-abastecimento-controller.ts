@@ -2,21 +2,19 @@ import { AbastecimentoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Abastecimento, Carro } from "@/core/models";
 import { abastecimentoValidator } from "@/core/validators";
-import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, created, serverError, notFound } from "@/infra/adapters/response-wrapper";
 
-interface CreateAbastecimentoControllerParams {
+interface EditAbastecimentoControllerParams {
 	input: AbastecimentoDTO;
 	repository: Repository<Abastecimento, AbastecimentoDTO>;
-	carroRepository: Repository<Carro, Carro>;
 }
 
-export const createAbastecimentoController = async (params: CreateAbastecimentoControllerParams): Promise<ResponseData> => {
+export const editAbastecimentoController = async (params: EditAbastecimentoControllerParams): Promise<ResponseData> => {
 	try {
-		const { input, repository, carroRepository } = params;
+		const { input, repository } = params;
 
 		const abastecimento: AbastecimentoDTO = {
-			id: newID(),
+			id: input.id,
 			carroId: input.carroId,
 			kmInicial: input.kmInicial,
 			kmFinal: input.kmFinal,
@@ -25,12 +23,6 @@ export const createAbastecimentoController = async (params: CreateAbastecimentoC
 			combustivel: input.combustivel,
 			tipoCombustivel: input.tipoCombustivel,
 			data: input.data,
-		}
-
-		const result = await carroRepository.get(input.carroId);
-
-		if(!result){
-			return notFound('Carro não encontrado!');
 		}
 
 		const errors = abastecimentoValidator(abastecimento);
