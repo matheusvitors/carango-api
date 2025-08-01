@@ -9,16 +9,15 @@ export const carroValidator = (carro: Carro): object | boolean =>  {
 		marca: z.string().min(2, 'A marca é obrigatória'),
 	})
 
-	const result = carroScheme.safeParse(carro).error
+	const result = carroScheme.safeParse(carro)
 
 	const errors: object = {};
-	if(result){
-		result.errors.forEach(error => {
+	if(result.error){
+		result.error.issues.forEach(error => {
 			Object.assign(errors, {
 				[error.path[0]]: error.message
 			})
 		})
-
 		return errors;
 	}
 

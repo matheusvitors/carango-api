@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { route } from "@/infra/adapters/route";
 import { abastecimentoPrismaRepository, carroPrismaRepository } from "@/infra/database/prisma";
-import { createAbastecimentoController, editAbastecimentoController, getAbastecimentoController, listAbastecimentosController } from "@/application/controllers/abastecimentos";
+import { createAbastecimentoController, editAbastecimentoController, getAbastecimentoController, listAbastecimentosController, removeAbastecimentoController } from "@/application/controllers/abastecimentos";
 
 const router = Router();
 const repository = abastecimentoPrismaRepository;
@@ -42,9 +42,8 @@ router.post(`${path}/:carroId/abastecimentos`, async (request: Request, response
 router.put(`${path}/abastecimentos/:id`, async (request: Request, response: Response) => {
 	const responseData = await editAbastecimentoController({
 		repository,
+		id: request.params.id,
 		input: {
-			id: request.body.id,
-			carroId: request.params.carroId,
 			kmInicial: request.body.kmInicial,
 			kmFinal: request.body.kmFinal,
 			litros: request.body.litros,
@@ -57,12 +56,12 @@ router.put(`${path}/abastecimentos/:id`, async (request: Request, response: Resp
 	route({ response, responseData });
 })
 
-// router.delete(`${path}/:id`, async (request: Request, response: Response) => {
-// 	const responseData = await removeCarroController({
-// 		repository,
-// 		id: request.params.id
-// 	});
-// 	route({ response, responseData });
-// })
+router.delete(`${path}/abastecimentos/:id`, async (request: Request, response: Response) => {
+	const responseData = await removeAbastecimentoController({
+		repository,
+		id: request.params.id
+	});
+	route({ response, responseData });
+})
 
 export { router as abastecimentosRoutes }

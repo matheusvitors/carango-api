@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { app } from "@/server";
 
-describe('Lis Abastecimentos - Integration Test', () => {
+describe('List Abastecimentos - Integration Test', () => {
 
 	const repository = abastecimentoPrismaRepository;
 	const carroRepository = carroPrismaRepository;

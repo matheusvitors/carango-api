@@ -34,10 +34,9 @@ export const createCarroController = async (params: CreateCarroControllerParams)
 		}
 
 		await repository.create(carro);
-
 		return created();
-
 	} catch (error) {
+		console.error(error)
 		return serverError(error);
 	}
 }

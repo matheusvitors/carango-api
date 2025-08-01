@@ -2,8 +2,9 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import supertest from "supertest";
 import { jwt } from "@/infra/adapters/jwt";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
+import { app } from "@/server";
 
-describe.skip('Abastecimento - Integration Test', () => {
+describe('Delete Abastecimento - Integration Test', () => {
 
 	const repository = abastecimentoPrismaRepository;
 	const carroRepository = carroPrismaRepository;
@@ -45,7 +46,8 @@ describe.skip('Abastecimento - Integration Test', () => {
 			litros: 5,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date()
 		})
 
 		await repository.create({
@@ -56,7 +58,8 @@ describe.skip('Abastecimento - Integration Test', () => {
 			litros: 20,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date()
 		})
 
 	})
@@ -67,6 +70,21 @@ describe.skip('Abastecimento - Integration Test', () => {
 		await usuarioPrismaRepository.removeAll();
 	})
 
+	it('should delete the abastecimento', async () => {
+		const response = await supertest(app)
+		.delete(`${path}/abastecimentos/456`)
+		.set({ authorization: `Bearer ${token}`});
+
+		expect(response.status).toEqual(200);
+	});
+
+	it('should not find the car on delete', async () => {
+		const response = await supertest(app)
+		.delete(`${path}/abastecimentos/999`)
+		.set({ authorization: `Bearer ${token}`});
+
+		expect(response.status).toEqual(404);
+	});
 
 
 });

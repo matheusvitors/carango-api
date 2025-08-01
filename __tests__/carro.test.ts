@@ -84,7 +84,7 @@ describe('Carro - Integration Test', () => {
 		const response = await supertest(app)
 		.post(path)
 		.send({
-			placa: 'jjj1234',
+			placa: 'jjj1235',
 			modelo: 'u',
 			marca: 'f',
 		})
@@ -138,7 +138,7 @@ describe('Carro - Integration Test', () => {
 		expect(response.status).toEqual(200);
 	});
 
-	it('should return 422 if pass invalid two or more data ', async () => {
+	it('should return 422 if pass invalid two or more data on edit', async () => {
 		const response = await supertest(app)
 		.put(path)
 		.send({
@@ -155,7 +155,7 @@ describe('Carro - Integration Test', () => {
 		expect(response.body.response.errors.modelo).toEqual('O modelo é obrigatório');
 	});
 
-	it('should return 422 if pass incorrect placa format ', async () => {
+	it('should return 422 if pass incorrect placa format on edit', async () => {
 		const response = await supertest(app)
 		.put(path)
 		.send({
@@ -171,7 +171,7 @@ describe('Carro - Integration Test', () => {
 		expect(response.body.response.errors.placa).toEqual('A placa está com o formato incorreto!');
 	});
 
-	it('should return 409 if pass existent placa ', async () => {
+	it('should return 409 if pass existent placa on edit', async () => {
 		const response = await supertest(app)
 		.put(path)
 		.send({

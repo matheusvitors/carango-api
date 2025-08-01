@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { app } from "@/server";
 
-describe.skip('Abastecimento - Integration Test', () => {
+describe('Edit Abastecimento - Integration Test', () => {
 
 	const repository = abastecimentoPrismaRepository;
 	const carroRepository = carroPrismaRepository;
@@ -47,7 +47,7 @@ describe.skip('Abastecimento - Integration Test', () => {
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
 			tipoCombustivel: "comum",
-			data: new Date()
+			data: new Date('2025-01-01')
 		})
 
 		await repository.create({
@@ -59,7 +59,7 @@ describe.skip('Abastecimento - Integration Test', () => {
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
 			tipoCombustivel: "comum",
-			data: new Date()
+			data: new Date('2025-01-01')
 		})
 
 	})
@@ -72,30 +72,36 @@ describe.skip('Abastecimento - Integration Test', () => {
 
 	it('should edit a refueling', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
-			kmInicial: 100,
+			kmInicial: 110,
 			kmFinal: 250,
 			litros: 20,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
 			tipoCombustivel: "comum",
-			data: new Date()
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 
-		expect(response.status).toEqual(201);
+		const { body } = await supertest(app)
+		.get(`${path}/abastecimentos/123`)
+		.set({ authorization: `Bearer ${token}`});
+
+		expect(response.status).toEqual(200);
+		expect(body.response.content.kmInicial).toEqual(110);
+
 	});
 
 	it('should return 422 if pass invalid two or more data on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 'a',
 			precoCombustivel: 2.00,
-			combustivel: "alcool",
+			combustivel: "alcool"
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -104,25 +110,26 @@ describe.skip('Abastecimento - Integration Test', () => {
 		expect(response.body.response.errors.litros).toEqual('Invalid input: expected number, received string');
 	});
 
-	it('should return 404 if carroId not foundon edit ', async () => {
+	it('should return 404 if abastecimento not found on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/zzz/abastecimentos`)
+		.put(`${path}/abastecimentos/xyz`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 20,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(404);
 	});
 
-	it('should return 422 if km final is less than km inicialon edit ', async () => {
+	it('should return 422 if km final is less than km inicial on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 50,
@@ -130,7 +137,7 @@ describe.skip('Abastecimento - Integration Test', () => {
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
 			tipoCombustivel: "comum",
-			data: new Date()
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -138,16 +145,17 @@ describe.skip('Abastecimento - Integration Test', () => {
 		expect(response.body.response.errors.combustivel).toEqual('O km final é menor que o km inicial');
 	});
 
-	it('should return 422 if litros is equal 0on edit ', async () => {
+	it('should return 422 if litros is equal 0 on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 0,
 			precoCombustivel: 2.00,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -155,16 +163,17 @@ describe.skip('Abastecimento - Integration Test', () => {
 		expect(response.body.response.errors.litros).toEqual('A quantidade de litros deve ser maior que zero');
 	});
 
-	it('should return 422 if precoCombustivel is equal 0on edit ', async () => {
+	it('should return 422 if precoCombustivel is equal 0 on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 10,
 			precoCombustivel:0,
 			combustivel: "gasolina",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 
@@ -172,36 +181,35 @@ describe.skip('Abastecimento - Integration Test', () => {
 		expect(response.body.response.errors.precoCombustivel).toEqual('O preço do combustível deve ser maior que zero');
 	});
 
-	it('should return 422 if combustivel is different from gasolina or alcoolon edit ', async () => {
+	it('should return 422 if combustivel is different from gasolina or alcool on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 10,
 			precoCombustivel: 1,
 			combustivel: "água",
-			tipoCombustivel: "comum"
+			tipoCombustivel: "comum",
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
-
-
-		console.log(response.body);
 
 		expect(response.status).toEqual(422);
 		expect(response.body.response.errors.combustivel).toEqual('O combustível é inválido');
 	});
 
-	it('should return 422 if tipoCombustivel is different from comum or aditivadaon edit ', async () => {
+	it('should return 422 if tipoCombustivel is different from comum or aditivada on edit ', async () => {
 		const response = await supertest(app)
-		.post(`${path}/abc/abastecimentos`)
+		.put(`${path}/abastecimentos/123`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
 			litros: 10,
 			precoCombustivel:0,
 			combustivel: "gasolina",
-			tipoCombustivel: "incomum"
+			tipoCombustivel: "incomum",
+			data: new Date('2025-01-01')
 		})
 		.set({ authorization: `Bearer ${token}`});
 

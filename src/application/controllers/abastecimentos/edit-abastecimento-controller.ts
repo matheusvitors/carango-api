@@ -2,20 +2,27 @@ import { AbastecimentoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Abastecimento, Carro } from "@/core/models";
 import { abastecimentoValidator } from "@/core/validators";
-import { unprocessableEntity, created, serverError, notFound } from "@/infra/adapters/response-wrapper";
+import { unprocessableEntity, created, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
 
 interface EditAbastecimentoControllerParams {
-	input: AbastecimentoDTO;
+	id: string;
+	input: Omit<AbastecimentoDTO, 'carroId' | 'id'>;
 	repository: Repository<Abastecimento, AbastecimentoDTO>;
 }
 
 export const editAbastecimentoController = async (params: EditAbastecimentoControllerParams): Promise<ResponseData> => {
 	try {
-		const { input, repository } = params;
+		const { input, repository, id } = params;
+
+		const savedAbastecimento = await repository.get(id);
+
+		if(!savedAbastecimento) {
+			return notFound();
+		}
 
 		const abastecimento: AbastecimentoDTO = {
-			id: input.id,
-			carroId: input.carroId,
+			id,
+			carroId: savedAbastecimento.carroId,
 			kmInicial: input.kmInicial,
 			kmFinal: input.kmFinal,
 			litros: input.litros,
@@ -31,8 +38,8 @@ export const editAbastecimentoController = async (params: EditAbastecimentoContr
 			return unprocessableEntity(errors as object);
 		}
 
-		await repository.create(abastecimento);
-		return created();
+		await repository.edit(abastecimento);
+		return success();
 	} catch (error) {
 		return serverError(error);
 	}
