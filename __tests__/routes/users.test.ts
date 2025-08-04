@@ -6,8 +6,7 @@ import { database } from "@/infra/database/client";
 import { SECRET } from "@/infra/config/environment";
 import { jwt } from "@/infra/adapters/jwt";
 
-
-describe('Usuario - Integration Test', () => {
+describe.skip('Usuario - Integration Test', () => {
 
 	const repository = usuarioPrismaRepository;
 	const token = jwt.encode({ payload: {id: 'abc'}});

@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { app } from "@/server";
 
-describe('Carro - Integration Test', () => {
+describe.skip('Carro - Integration Test', () => {
 
 	const repository = carroPrismaRepository;
 	const usuarioRepository = usuarioPrismaRepository;

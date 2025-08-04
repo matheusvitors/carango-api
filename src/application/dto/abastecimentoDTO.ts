@@ -6,7 +6,7 @@ export interface AbastecimentoDTO {
 	litros: number;
 	precoCombustivel: number;
 	combustivel: string;
-	tipoCombustivel?: string;
+	tipoCombustivel?: string | null;
 	data: Date;
 }
 

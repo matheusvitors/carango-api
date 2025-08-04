@@ -5,7 +5,7 @@ const limiter = new RateLimiterMemory({
 	points: process.env.NODE_ENV === 'test' ? 1000 : 10,
 	duration: 5
 })
-console.log('env', process.env.NODE_ENV);
+console.info('env', process.env.NODE_ENV);
 
 export const security =  async (request: Request, response: Response, next: NextFunction) => {
 	try {
