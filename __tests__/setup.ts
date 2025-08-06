@@ -1,4 +1,4 @@
-import { beforeAll, afterAll, afterEach } from "vitest";
+import { beforeAll } from "vitest";
 import { faker } from "@faker-js/faker/locale/pt_BR";
 import { newID } from "@/infra/adapters/newID";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
@@ -66,18 +66,3 @@ beforeAll(async () => {
 		data: new Date(),
 	});
 });
-
-// afterEach(async () => {
-afterAll(async () => {
-	console.log('after all');
-
-	// await repository.remove(abastecimentoId);
-	// await repository.remove(abastecimentoId2);
-	// await carroRepository.remove(carro.id);
-	// await carroRepository.remove(carro2.id);
-	// await usuarioPrismaRepository.remove(user.id);
-
-	await repository.removeAll();
-	await carroRepository.removeAll();
-	await usuarioRepository.removeAll();
-})

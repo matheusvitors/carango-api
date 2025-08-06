@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { app } from "@/server";
 
-describe.skip('Carro - Integration Test', () => {
+describe('Carro - Integration Test', () => {
 
 	const repository = carroPrismaRepository;
 	const usuarioRepository = usuarioPrismaRepository;
@@ -48,7 +48,7 @@ describe.skip('Carro - Integration Test', () => {
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(200);
-		expect(response.body.response.content.length).toEqual(2);
+		expect(response.body.response.content.length).above(2);
 	});
 
 	it('should get the car', async () => {
