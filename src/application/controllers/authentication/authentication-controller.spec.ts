@@ -6,7 +6,7 @@ import { describe, it, expect, beforeAll} from "vitest";
 
 describe("Authentication Controller", () => {
 
-	const repository = new InMemoryRepository<Usuario>()
+	const repository = new InMemoryRepository<Usuario, Usuario>()
 
 	beforeAll(() => {
 		repository.create({
@@ -18,9 +18,7 @@ describe("Authentication Controller", () => {
 		})
 	})
 
-
 	it("should authenticate the user", async () => {
-
 		const result = await authenticationController({ repository, username: "teste", password: '123456' });
 		const resultId = jwt.verify(result.body.content.token).payload.id;
 
@@ -29,15 +27,12 @@ describe("Authentication Controller", () => {
 	});
 
 	it("should return 401 if password is wrong", async () => {
-
 		const result = await authenticationController({ repository, username: "teste", password: "456" });
-
 		expect(result.status).toEqual(401);
 	});
 
 	it("should return 404 if user not found", async () => {
 		const result = await authenticationController({ repository, username: "dev", password: '123456' });
-
 		expect(result.status).toEqual(404);
 	});
 });

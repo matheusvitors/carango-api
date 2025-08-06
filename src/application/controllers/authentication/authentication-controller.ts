@@ -5,7 +5,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { notFound, serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
 
 interface AuthenticationControllerParams {
-	repository: Repository<Usuario>;
+	repository: Repository<Usuario, Usuario>;
 	username: string;
 	password: string;
 }

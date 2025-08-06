@@ -4,10 +4,7 @@ import { newID } from "@/infra/adapters/newID";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { placaGenerator } from "@/utils/placa-generator";
 import { Carro, Usuario } from "@/core/models";
-
-const repository = abastecimentoPrismaRepository;
-const carroRepository = carroPrismaRepository;
-const usuarioRepository = usuarioPrismaRepository;
+import { TEST_TYPE } from "@/infra/config/environment";
 
 export const abastecimentoId = newID();
 export const abastecimentoId2 = newID();
@@ -28,7 +25,7 @@ export const carro: Carro = {
 	usuarioId: user.id,
 };
 
-const carro2: Carro = {
+export const carro2: Carro = {
 	id: newID(),
 	placa: placaGenerator(),
 	modelo: faker.vehicle.model(),
@@ -36,33 +33,42 @@ const carro2: Carro = {
 	usuarioId: user.id,
 };
 
-beforeAll(async () => {
-	await usuarioRepository.create(user);
+console.log(TEST_TYPE);
 
-	await carroRepository.create(carro);
-	await carroRepository.create(carro2);
+if(TEST_TYPE === 'e2e') {
+	const repository = abastecimentoPrismaRepository;
+	const carroRepository = carroPrismaRepository;
+	const usuarioRepository = usuarioPrismaRepository;
 
-	await repository.create({
-		id: abastecimentoId,
-		carroId: carro.id,
-		kmInicial: 0,
-		kmFinal: 50,
-		litros: 5,
-		precoCombustivel: 2.0,
-		combustivel: "gasolina",
-		tipoCombustivel: "comum",
-		data: new Date(),
+
+	beforeAll(async () => {
+		await usuarioRepository.create(user);
+
+		await carroRepository.create(carro);
+		await carroRepository.create(carro2);
+
+		await repository.create({
+			id: abastecimentoId,
+			carroId: carro.id,
+			kmInicial: 0,
+			kmFinal: 50,
+			litros: 5,
+			precoCombustivel: 2.0,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum",
+			data: new Date(),
+		});
+
+		await repository.create({
+			id: abastecimentoId2,
+			carroId: carro2.id,
+			kmInicial: 100,
+			kmFinal: 250,
+			litros: 20,
+			precoCombustivel: 2.0,
+			combustivel: "gasolina",
+			tipoCombustivel: "comum",
+			data: new Date(),
+		});
 	});
-
-	await repository.create({
-		id: abastecimentoId2,
-		carroId: carro2.id,
-		kmInicial: 100,
-		kmFinal: 250,
-		litros: 20,
-		precoCombustivel: 2.0,
-		combustivel: "gasolina",
-		tipoCombustivel: "comum",
-		data: new Date(),
-	});
-});
+}
