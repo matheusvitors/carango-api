@@ -10,8 +10,9 @@ export default defineConfig(({ mode }) => ({
 	test: {
 		clearMocks: true,
 		globals: true,
-		// setupFiles: ["dotenv/config"],
 		env: loadEnv(mode, process.cwd(), ''),
+		isolate: true,
+		setupFiles: './__tests__/setup.ts',
 	},
 	resolve: {
 		alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
