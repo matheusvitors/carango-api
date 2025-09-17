@@ -12,8 +12,7 @@ router.post('/login', async (request: Request, response: Response) => {
 		username: request.body.username,
 		password: request.body.password,
 	});
-	return route({ response, responseData });
-
+	route({ response, responseData });
 })
 
 export { router as AuthenticationRoutes };
