@@ -2,6 +2,9 @@
 	"name": "carango-api",
 	"version": "1.0.0",
 	"main": "dist/server.js",
+	"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
 	"scripts": {
 		"start": "node dist/server.js",
 		"build": "tsup src",
