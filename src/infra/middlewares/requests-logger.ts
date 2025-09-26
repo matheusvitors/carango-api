@@ -4,6 +4,7 @@ export const requestLogger = async (request: Request, response: Response, next: 
 
 	const logText = `[${request.method}] - ${request.url} - ${request.ip} - ${new Date().toLocaleDateString('pt-BR', {hour: "2-digit", minute: '2-digit'})}${request.body !== undefined ? ' - [BODY]' + JSON.stringify(request.body): ''}}`
 
+	console.log('--------------------------------------')
 	console.info(logText);
 	next();
 }

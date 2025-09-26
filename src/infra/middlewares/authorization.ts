@@ -5,9 +5,9 @@ export const authorization = async (request: Request, response: Response, next: 
 
 	try {
 		const unprotectedPaths = ['/', '/login'];
-
+		console.warn(request.path, unprotectedPaths.includes(request.path));
 		if(unprotectedPaths.includes(request.path) || process.env.AUTHENTICATION === 'false') {
-			next();
+			return next();
 		}
 
 		const accessType = request.headers['authorization']?.split(' ')[0];

@@ -7,14 +7,14 @@ const routes = Router();
 routes.get('/', (request: Request, response: Response) => {
 	response.status(200).send({
 		name: 'Carango',
-		teste: 1,
 		version: project.version
 	});
 });
 
 routes.get('/test', async (request: Request, response: Response) => {
 	response.status(200).send({
-		message: 'Test!'
+		message: 'Test!',
+		randomNumber: Math.random()
 	});
 });
 
