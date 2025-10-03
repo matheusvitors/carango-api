@@ -10,10 +10,12 @@ app.use(helmet());
 app.use(middlewares as RequestHandler[]);
 app.use(routes);
 
+const PORT = process.env.PORT || 8000
+
 if(process.env.NODE_ENV !== "test") {
-	app.listen(process.env.PORT || 8000, function (){
+	app.listen(PORT, function (){
 		console.info('--------------------------------------')
-		console.info("Carango running on port %d", 7011);
+		console.info("Carango running on port %d", PORT);
 		console.info('--------------------------------------')
 	});
 }

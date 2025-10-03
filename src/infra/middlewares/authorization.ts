@@ -5,7 +5,6 @@ export const authorization = async (request: Request, response: Response, next: 
 
 	try {
 		const unprotectedPaths = ['/', '/login'];
-		console.warn(request.path, unprotectedPaths.includes(request.path));
 		if(unprotectedPaths.includes(request.path) || process.env.AUTHENTICATION === 'false') {
 			return next();
 		}
