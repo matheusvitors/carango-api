@@ -7,8 +7,6 @@ interface RouteParams {
 }
 
 export const route = async ( {response, responseData}: RouteParams) => {
-	console.log(responseData);
-
 	if(responseData.body) {
 		return response.status(responseData.status).json({response: responseData.body})
 	} else {

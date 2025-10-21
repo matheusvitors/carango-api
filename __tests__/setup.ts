@@ -33,8 +33,6 @@ export const carro2: Carro = {
 	usuarioId: user.id,
 };
 
-console.log(TEST_TYPE);
-
 if(TEST_TYPE === 'e2e') {
 	const repository = abastecimentoPrismaRepository;
 	const carroRepository = carroPrismaRepository;

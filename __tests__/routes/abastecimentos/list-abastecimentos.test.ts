@@ -6,8 +6,6 @@ import { user, carro } from "__tests__/setup";
 import { DATABASE_URL } from "@/infra/config/environment";
 
 describe('List Abastecimentos - Integration Test', () => {
-	console.log('db url', DATABASE_URL);
-
 	const path = '/carros';
 	const token = jwt.encode({ payload: {id: user.id}});
 

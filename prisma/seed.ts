@@ -1,17 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import { uuidv7 } from "uuidv7";
+import { encrypt } from '../src/infra/adapters/encryption'
 
 const prisma = new PrismaClient();
 
 async function main() {
 	await prisma.usuario.upsert({
-		where: { username: process.env.NICKNAME },
+		where: { username: process.env.NICKNAME || 'dev' },
 		update: {},
 		create: {
 			id: uuidv7(),
 			nome: process.env.NOME || 'dev',
 			username: process.env.NICKNAME || 'dev',
-			password: process.env.PASSWORD || '123',
+			password: await encrypt(process.env.PASSWORD || '123'),
 			email: process.env.EMAIL || 'dev@dev.com',
 		}
 	})
