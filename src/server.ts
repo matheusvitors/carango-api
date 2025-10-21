@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 8000
 if(process.env.NODE_ENV !== "test") {
 	app.listen(PORT, function (){
 		console.info('--------------------------------------')
-		console.info("Carango running on port %d", PORT);
+		console.info(` >>>>>> Carango running on port ${PORT} in ${process.env.NODE_ENV}`);
 		console.info('--------------------------------------')
 	});
 }
