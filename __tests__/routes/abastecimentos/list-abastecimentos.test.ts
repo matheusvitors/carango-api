@@ -2,8 +2,7 @@ import { describe, expect, it } from "vitest";
 import supertest from "supertest";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { user, carro } from "__tests__/setup";
-import { DATABASE_URL } from "@/infra/config/environment";
+import { user, carro } from "../../setup";
 
 describe('List Abastecimentos - Integration Test', () => {
 	const path = '/carros';

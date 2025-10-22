@@ -28,7 +28,8 @@ export const authenticationController = async (params: AuthenticationControllerP
 		}
 
 		const token = jwt.encode({payload: {auth: true, id: usuario.id}});
-		return success({token});
+		const refreshToken = jwt.encode({payload: {id: usuario.id}, expiration: '7d'});
+		return success({token, refreshToken});
 	} catch (error) {
 		console.error(error);
 		return serverError(error)

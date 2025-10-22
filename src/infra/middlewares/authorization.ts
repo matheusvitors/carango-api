@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 export const authorization = async (request: Request, response: Response, next: NextFunction) => {
 
 	try {
-		const unprotectedPaths = ['/', '/login'];
+		const unprotectedPaths = ['/', '/login', '/auth/refresh-token'];
 		if(unprotectedPaths.includes(request.path) || process.env.AUTHENTICATION === 'false') {
 			return next();
 		}

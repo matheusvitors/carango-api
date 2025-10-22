@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import supertest from "supertest";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { abastecimentoId, abastecimentoId2, user } from "__tests__/setup";
+import { abastecimentoId, abastecimentoId2, user } from "../../setup";
 
 describe('Delete Abastecimento - Integration Test', () => {
 

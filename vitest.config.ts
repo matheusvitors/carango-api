@@ -10,11 +10,14 @@ export default defineConfig(({ mode }) => ({
 	test: {
 		clearMocks: true,
 		globals: true,
-		env: loadEnv(mode, process.cwd(), ''),
-		isolate: true,
-		setupFiles: './__tests__/setup.ts',
+		env: loadEnv(mode, process.cwd(), ""),
+		isolate: false,
+		setupFiles: "./__tests__/setup.ts",
+		pool: "forks",
+		testTimeout: 25000,
+		hookTimeout: 15000
 	},
 	resolve: {
-		alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
+		alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
 	},
 }));

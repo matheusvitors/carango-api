@@ -9,6 +9,7 @@ export const requestLogger = async (request: Request, response: Response, next: 
 		const duration = Date.now() - start;
 		console.info(`[${request.method}] - ${new Date().toLocaleDateString('pt-BR', {hour: "2-digit", minute: '2-digit'})} - ${request.ip} - ${request.url} - ${response.statusCode} - ${duration}ms`);
 		NODE_ENV === 'development' && request.body && console.info(`<REQUEST BODY>' ${JSON.stringify(request.body)}`)
+
 		console.info('-------------------------------------')
 
 		return originalEnd.apply(this);
