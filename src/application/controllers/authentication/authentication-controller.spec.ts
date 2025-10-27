@@ -24,6 +24,7 @@ describe("Authentication Controller", () => {
 
 		expect(result.status).toEqual(200);
 		expect(resultId).toEqual('abc');
+		expect(result.body.content.refreshToken.length).toBeGreaterThan(5);
 	});
 
 	it("should return 401 if password is wrong", async () => {

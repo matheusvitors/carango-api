@@ -15,7 +15,7 @@ export const jwt = {
 				return Jwt.sign(
 					{ payload },
 					SECRET,
-					{expiresIn: JWT_EXPIRE as ms.StringValue}
+					{expiresIn: (expiration || JWT_EXPIRE) as ms.StringValue}
 				);
 			} catch (error: any) {
 				throw new JwtError(error.message);

@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 export const authorization = async (request: Request, response: Response, next: NextFunction) => {
 
 	try {
-		const unprotectedPaths = ['/', '/login'];
+		const unprotectedPaths = ['/', '/login', '/auth/refresh-token'];
 		if(unprotectedPaths.includes(request.path) || process.env.AUTHENTICATION === 'false') {
 			return next();
 		}
@@ -25,7 +25,7 @@ export const authorization = async (request: Request, response: Response, next: 
 		}
 
 		jwt.verify(token);
-		next();
+		return next();
 
 	} catch (error: any) {
 		let status = 500;
@@ -34,7 +34,6 @@ export const authorization = async (request: Request, response: Response, next: 
 			error.name === 'JsonWebTokenError' ||
 			error.name === 'NotBeforeError') {
 			status = 401;
-
 		}
 
 		return response.status(status).json({

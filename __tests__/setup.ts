@@ -1,10 +1,12 @@
-import { beforeAll } from "vitest";
-import { faker } from "@faker-js/faker/locale/pt_BR";
+import { afterAll, beforeAll } from "vitest";
+import { fakerPT_BR as faker } from "@faker-js/faker";
 import { newID } from "@/infra/adapters/newID";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { placaGenerator } from "@/utils/placa-generator";
 import { Carro, Usuario } from "@/core/models";
 import { TEST_TYPE } from "@/infra/config/environment";
+import { database } from "@/infra/database/client";
+
 
 export const abastecimentoId = newID();
 export const abastecimentoId2 = newID();
@@ -69,4 +71,8 @@ if(TEST_TYPE === 'e2e') {
 			data: new Date(),
 		});
 	});
+
+	afterAll(async () => {
+		await database.$disconnect()
+	})
 }

@@ -36,6 +36,10 @@ export const unsupportMediaType = (): ResponseData => {
 	return { status: 415 };
 }
 
+export const iAmTeaPot = (): ResponseData => {
+	return { status: 418 };
+}
+
 export const unprocessableEntity = (errors: object): ResponseData => {
 	return { status: 422, body: { errors } };
 }

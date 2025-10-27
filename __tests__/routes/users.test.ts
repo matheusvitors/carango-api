@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 ;import supertest from "supertest";
 import { app } from "@/server";
 import { jwt } from "@/infra/adapters/jwt";
-import { user } from "__tests__/setup";
+import { user } from "../setup";
 
 describe('Usuario - Integration Test', () => {
 
