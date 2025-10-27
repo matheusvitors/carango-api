@@ -25,7 +25,7 @@ export const authorization = async (request: Request, response: Response, next: 
 		}
 
 		jwt.verify(token);
-		next();
+		return next();
 
 	} catch (error: any) {
 		let status = 500;
@@ -34,7 +34,6 @@ export const authorization = async (request: Request, response: Response, next: 
 			error.name === 'JsonWebTokenError' ||
 			error.name === 'NotBeforeError') {
 			status = 401;
-
 		}
 
 		return response.status(status).json({

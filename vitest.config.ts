@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => ({
 		clearMocks: true,
 		globals: true,
 		env: loadEnv(mode, process.cwd(), ""),
-		isolate: false,
 		setupFiles: "./__tests__/setup.ts",
+		// isolate: false,
 		pool: "forks",
 		testTimeout: 25000,
 		hookTimeout: 15000
