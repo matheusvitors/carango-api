@@ -6,12 +6,21 @@ import { placaGenerator } from "@/utils/placa-generator";
 import { Carro, Usuario } from "@/core/models";
 import { TEST_TYPE } from "@/infra/config/environment";
 import { database } from "@/infra/database/client";
+import { afterEach, beforeEach } from "node:test";
 
 
 export const abastecimentoId = newID();
 export const abastecimentoId2 = newID();
 
 export const user: Usuario = {
+	id: newID(),
+	nome: faker.person.fullName(),
+	username: faker.internet.username(),
+	password: faker.internet.password(),
+	email: faker.internet.email(),
+};
+
+export const user2: Usuario = {
 	id: newID(),
 	nome: faker.person.fullName(),
 	username: faker.internet.username(),
@@ -40,8 +49,13 @@ if(TEST_TYPE === 'e2e') {
 	const carroRepository = carroPrismaRepository;
 	const usuarioRepository = usuarioPrismaRepository;
 
+	(async () => {
+		console.log('setuping database...');
 
-	beforeAll(async () => {
+		await usuarioRepository.removeAll();
+		await carroRepository.removeAll();
+		await repository.removeAll();
+
 		await usuarioRepository.create(user);
 
 		await carroRepository.create(carro);
@@ -70,7 +84,8 @@ if(TEST_TYPE === 'e2e') {
 			tipoCombustivel: "comum",
 			data: new Date(),
 		});
-	});
+
+	})()
 
 	afterAll(async () => {
 		await database.$disconnect()

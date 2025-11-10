@@ -10,7 +10,8 @@ generator client {
 
 datasource db {
     provider = "mysql"
-    url      = env("DATABASE_URL")
+    url      = "mysql://root:123456@localhost:3306/carango_test"
+    // url      = env("DATABASE_URL")
 }
 
 model Usuario {

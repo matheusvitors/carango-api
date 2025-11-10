@@ -1,14 +1,19 @@
-
-
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Carro } from "@/core/models";
 import { serverError, success } from "@/infra/adapters/response-wrapper";
 
-export const listCarrosController = async (repository: Repository<Carro, Carro>): Promise<ResponseData> => {
+interface ListCarrosControllerParams {
+	usuarioId: string;
+	repository: Repository<Carro, Carro>;
+}
+
+export const listCarrosController = async (params: ListCarrosControllerParams): Promise<ResponseData> => {
 	try {
-		const carros = await repository.list();
+		const { repository, usuarioId } = params;
+		const carros = await repository.filter!([{usuarioId}]);
 		return success(carros);
 	} catch (error) {
+		console.error(error)
 		return serverError(error);
 	}
 }
