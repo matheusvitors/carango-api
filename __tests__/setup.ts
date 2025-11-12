@@ -1,4 +1,4 @@
-import { afterAll, beforeAll } from "vitest";
+import { afterAll } from "vitest";
 import { fakerPT_BR as faker } from "@faker-js/faker";
 import { newID } from "@/infra/adapters/newID";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
@@ -6,8 +6,6 @@ import { placaGenerator } from "@/utils/placa-generator";
 import { Carro, Usuario } from "@/core/models";
 import { TEST_TYPE } from "@/infra/config/environment";
 import { database } from "@/infra/database/client";
-import { afterEach, beforeEach } from "node:test";
-
 
 export const abastecimentoId = newID();
 export const abastecimentoId2 = newID();
@@ -42,6 +40,14 @@ export const carro2: Carro = {
 	modelo: faker.vehicle.model(),
 	marca: faker.vehicle.manufacturer(),
 	usuarioId: user.id,
+};
+
+export const carro3: Carro = {
+	id: newID(),
+	placa: placaGenerator(),
+	modelo: faker.vehicle.model(),
+	marca: faker.vehicle.manufacturer(),
+	usuarioId: user2.id,
 };
 
 if(TEST_TYPE === 'e2e') {

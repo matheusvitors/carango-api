@@ -38,11 +38,11 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 	route({ response, responseData });
 })
 
-router.put(`${path}`, async (request: Request, response: Response) => {
+router.put(`${path}/:id`, async (request: Request, response: Response) => {
 	const responseData = await editCarroController({
 		repository,
 		input: {
-			id: request.body.id,
+			id: request.params.id,
 			placa: request.body.placa,
 			marca: request.body.marca,
 			modelo: request.body.modelo,
