@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import supertest from "supertest";
 import { app } from "@/server";
-import { carro2, carro3, user } from "../../setup";
+import { carro, carro2, carro3, user } from "../../setup";
 import { jwt } from "@/infra/adapters/jwt";
 
 const path = `/carros`;
@@ -81,7 +81,7 @@ describe("Edit Carro - e2e Test", () => {
 		const response = await supertest(app)
 			.put(`${path}/${carro2.id}`)
 			.send({
-				placa: "ZZZ6543",
+				placa: carro.placa,
 				modelo: "Fiat",
 				marca: "Argo",
 			})

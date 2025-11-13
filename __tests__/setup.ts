@@ -1,9 +1,9 @@
-import { afterAll } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach } from "vitest";
 import { fakerPT_BR as faker } from "@faker-js/faker";
 import { newID } from "@/infra/adapters/newID";
 import { abastecimentoPrismaRepository, carroPrismaRepository, usuarioPrismaRepository } from "@/infra/database/prisma";
 import { placaGenerator } from "@/utils/placa-generator";
-import { Carro, Usuario } from "@/core/models";
+import { Abastecimento, Carro, Usuario } from "@/core/models";
 import { TEST_TYPE } from "@/infra/config/environment";
 import { database } from "@/infra/database/client";
 
@@ -50,50 +50,59 @@ export const carro3: Carro = {
 	usuarioId: user2.id,
 };
 
+export const abastecimento1: Abastecimento = {
+	id: newID(),
+	carroId: carro.id,
+	kmInicial: 0,
+	kmFinal: 50,
+	litros: 5,
+	precoCombustivel: 2.0,
+	combustivel: "gasolina",
+	tipoCombustivel: "comum",
+	data: new Date(),
+}
+
+export const abastecimento2: Abastecimento = {
+	id: newID(),
+	carroId: carro2.id,
+	kmInicial: 100,
+	kmFinal: 250,
+	litros: 20,
+	precoCombustivel: 2.0,
+	combustivel: "gasolina",
+	tipoCombustivel: "comum",
+	data: new Date(),
+}
+
 if(TEST_TYPE === 'e2e') {
 	const repository = abastecimentoPrismaRepository;
 	const carroRepository = carroPrismaRepository;
 	const usuarioRepository = usuarioPrismaRepository;
 
-	(async () => {
+	// (async () => {
+	beforeAll(async () => {
 		console.log('setuping database...');
 
-		await usuarioRepository.removeAll();
-		await carroRepository.removeAll();
-		await repository.removeAll();
 
 		await usuarioRepository.create(user);
 
 		await carroRepository.create(carro);
 		await carroRepository.create(carro2);
 
-		await repository.create({
-			id: abastecimentoId,
-			carroId: carro.id,
-			kmInicial: 0,
-			kmFinal: 50,
-			litros: 5,
-			precoCombustivel: 2.0,
-			combustivel: "gasolina",
-			tipoCombustivel: "comum",
-			data: new Date(),
-		});
+		await repository.create(abastecimento1);
+		await repository.create(abastecimento2);
 
-		await repository.create({
-			id: abastecimentoId2,
-			carroId: carro2.id,
-			kmInicial: 100,
-			kmFinal: 250,
-			litros: 20,
-			precoCombustivel: 2.0,
-			combustivel: "gasolina",
-			tipoCombustivel: "comum",
-			data: new Date(),
-		});
+	})
+	// })()
 
-	})()
+	afterEach(async () => {
+		await repository.removeAll();
+		await carroRepository.removeAll();
+		await usuarioRepository.removeAll();
+	})
 
 	afterAll(async () => {
+
 		await database.$disconnect()
 	})
 }

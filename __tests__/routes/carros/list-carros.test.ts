@@ -9,7 +9,7 @@ describe("List Carros - e2e Test", () => {
 
 	it("should list cars", async () => {
 		const response = await supertest(app)
-			.get(`/users/${user.id}/carros`)
+			.get(`/carros`)
 			.set({ authorization: `Bearer ${token}` });
 
 		// console.log(JSON.stringify(response.body, null, 2));

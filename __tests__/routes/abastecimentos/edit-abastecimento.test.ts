@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import supertest from "supertest";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { user, abastecimentoId } from "../../setup";
+import { user, abastecimento1 } from "../../setup";
 
 describe('Edit Abastecimento - Integration Test', () => {
 
@@ -11,7 +11,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should edit a refueling', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 110,
 			kmFinal: 250,
@@ -24,7 +24,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 		.set({ authorization: `Bearer ${token}`});
 
 		const { body } = await supertest(app)
-		.get(`${path}/abastecimentos/${abastecimentoId}`)
+		.get(`${path}/abastecimentos/${abastecimento1.id}`)
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(200);
@@ -34,7 +34,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if pass invalid two or more data on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
@@ -68,7 +68,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if km final is less than km inicial on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 50,
@@ -86,7 +86,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if litros is equal 0 on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
@@ -104,7 +104,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if precoCombustivel is equal 0 on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
@@ -122,7 +122,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if combustivel is different from gasolina or alcool on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
@@ -140,7 +140,7 @@ describe('Edit Abastecimento - Integration Test', () => {
 
 	it('should return 422 if tipoCombustivel is different from comum or aditivada on edit ', async () => {
 		const response = await supertest(app)
-		.put(`${path}/abastecimentos/${abastecimentoId}`)
+		.put(`${path}/abastecimentos/${abastecimento1.id}`)
 		.send({
 			kmInicial: 100,
 			kmFinal: 250,
