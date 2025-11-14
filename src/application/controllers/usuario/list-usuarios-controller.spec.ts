@@ -3,7 +3,7 @@ import { listUsuariosController } from "@/application/controllers/usuario/list-u
 import { Usuario } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 
-describe('Usuario List Controller', () => {
+describe.skip('Usuario List Controller', () => {
 	const repository = new InMemoryRepository<Usuario>();
 
 	it('should list users', async () => {

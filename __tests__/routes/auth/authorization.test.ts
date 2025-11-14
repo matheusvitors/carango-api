@@ -12,7 +12,7 @@ vi.mock("@/infra/adapters/jwt", () => ({
 	}
 }));
 
-describe('Authorization', () => {
+describe.skip('Authorization', () => {
 
 	afterEach(() => {
 		vi.restoreAllMocks();

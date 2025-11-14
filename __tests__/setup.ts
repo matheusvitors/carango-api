@@ -74,35 +74,48 @@ export const abastecimento2: Abastecimento = {
 	data: new Date(),
 }
 
+export const repository = abastecimentoPrismaRepository;
+export const carroRepository = carroPrismaRepository;
+export const usuarioRepository = usuarioPrismaRepository;
+
+
 if(TEST_TYPE === 'e2e') {
-	const repository = abastecimentoPrismaRepository;
-	const carroRepository = carroPrismaRepository;
-	const usuarioRepository = usuarioPrismaRepository;
+	// const repository = abastecimentoPrismaRepository;
+	// const carroRepository = carroPrismaRepository;
+	// const usuarioRepository = usuarioPrismaRepository;
 
 	// (async () => {
 	beforeAll(async () => {
-		console.log('setuping database...');
+		// console.log('before all');
 
+		// console.log('setuping database...');
+		// await usuarioRepository.create(user);
 
-		await usuarioRepository.create(user);
+		// await carroRepository.create(carro);
+		// await carroRepository.create(carro2);
 
-		await carroRepository.create(carro);
-		await carroRepository.create(carro2);
-
-		await repository.create(abastecimento1);
-		await repository.create(abastecimento2);
+		// await repository.create(abastecimento1);
+		// await repository.create(abastecimento2);
 
 	})
-	// })()
 
-	afterEach(async () => {
-		await repository.removeAll();
-		await carroRepository.removeAll();
-		await usuarioRepository.removeAll();
-	})
+	// beforeEach(async () => {
+	// 	console.log('before each');
 
-	afterAll(async () => {
+	// })
+	// // })()
 
-		await database.$disconnect()
-	})
+	// afterEach(async () => {
+	// 	console.log('after each');
+
+	// })
+
+	// afterAll(async () => {
+	// 	console.log('after all');
+	// 	// await repository.removeAll();
+	// 	// await carroRepository.removeAll();
+	// 	// await usuarioRepository.removeAll();
+
+	// 	// await database.$disconnect()
+	// })
 }

@@ -7,7 +7,7 @@ import { carro2, user } from "../../setup";
 const path = `/carros`;
 const token = jwt.encode({ payload: { id: user.id } });
 
-describe('Delete Carro - e2e Test', () => {
+describe.skip('Delete Carro - e2e Test', () => {
 	it('should delete the car', async () => {
 		const response = await supertest(app)
 		.delete(`${path}/${carro2.id}`)

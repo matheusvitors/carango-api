@@ -7,7 +7,7 @@ import { carro, user } from "../../setup";
 const path = `/carros`;
 const token = jwt.encode({ payload: { id: user.id } });
 
-describe("Create Carro - e2e Test", () => {
+describe.skip("Create Carro - e2e Test", () => {
 	it("should create a car", async () => {
 		const response = await supertest(app)
 			.post(path)

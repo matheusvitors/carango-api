@@ -3,5 +3,5 @@ export interface Carro {
 	placa: string;
 	modelo: string;
 	marca: string;
-	usuarioId?: string;
+	usuarioId: string;
 }

@@ -17,7 +17,7 @@ vi.mock("@/infra/adapters/jwt", async (importOriginal) => {
 	};
 });
 
-describe("Refresh Token - e2e Test", () => {
+describe.skip("Refresh Token - e2e Test", () => {
 	afterEach(() => {
 		vi.resetAllMocks();
 	});

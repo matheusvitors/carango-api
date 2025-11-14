@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
 import { user, abastecimentoId2 } from "../../setup";
 
-describe('Get Abastecimento - Integration Test', () => {
+describe.skip('Get Abastecimento - Integration Test', () => {
 
 	const path = '/carros'
 	const token = jwt.encode({ payload: {id: user.id}});

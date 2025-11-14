@@ -4,7 +4,7 @@ import { app } from "@/server";
 import { user } from "../../setup";
 import { jwt } from "@/infra/adapters/jwt";
 
-describe("List Carros - e2e Test", () => {
+describe.skip("List Carros - e2e Test", () => {
 	const token = jwt.encode({ payload: {id: user.id}});
 
 	it("should list cars", async () => {

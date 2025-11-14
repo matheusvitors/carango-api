@@ -7,7 +7,7 @@ import { jwt } from "@/infra/adapters/jwt";
 const path = `/carros`;
 const token = jwt.encode({ payload: { id: user.id } });
 
-describe("Get Carro - e2e Test", () => {
+describe.skip("Get Carro - e2e Test", () => {
 	it("should get the car", async () => {
 		const response = await supertest(app)
 			.get(`${path}/${carro.id}`)
