@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
 		globals: true,
 		env: loadEnv(mode, process.cwd(), ""),
 		setupFiles: "./__tests__/setup.ts",
-		// isolate: false,
+		isolate: true,
 		pool: "forks",
 		testTimeout: 25000,
 		hookTimeout: 15000

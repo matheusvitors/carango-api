@@ -13,7 +13,7 @@
 		"test": "vitest run --coverage",
 		"test:watch": "vitest --ui",
 		"test:unit:watch": "vitest --dir src --ui",
-		"test:e2e:watch": "dotenv -e .env.test npm run clear-db && vitest --dir __tests__ --ui",
+		"test:e2e:watch": "dotenv -e .env.test npm run clear-db && vitest --dir __tests__ --isolate --ui",
 		"test:e2e:watch:file": "dotenv -e .env.test npm run clear-db && vitest __tests__/routes/usuarios/usuarios-list.test --ui",
 		"test:unit:local": "dotenv -v TEST_TYPE=unit -- npm run test:unit",
 		"test:unit": "vitest run --dir src",
