@@ -1,13 +1,39 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import supertest from "supertest";
+import { faker } from "@faker-js/faker";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { user, carro } from "../../setup";
+import { carroRepository, usuarioRepository } from "../../setup";
+import { Carro, Usuario } from "@/core/models";
+import { newID } from "@/infra/adapters/newID";
+import { placaGenerator } from "@/utils/placa-generator";
 
-describe.skip('Create Abastecimento - Integration Test', () => {
+const path = '/carros';
 
-	const path = '/carros';
+describe('Create Abastecimento - Integration Test', () => {
+
+	const user: Usuario = {
+		id: newID(),
+		nome: faker.person.fullName(),
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+		email: faker.internet.email(),
+	}
+
+	const carro: Carro = {
+		id: newID(),
+		placa: placaGenerator(),
+		modelo: faker.vehicle.model(),
+		marca: faker.vehicle.manufacturer(),
+		usuarioId: user.id,
+	};
+
 	const token = jwt.encode({ payload: { id: user.id } });
+
+	beforeAll(async () => {
+		await usuarioRepository.create(user);
+		await carroRepository.create(carro);
+	});
 
 	it('should create a refueling', async () => {
 		const response = await supertest(app)

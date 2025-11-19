@@ -1,18 +1,63 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import supertest from "supertest";
 import { app } from "@/server";
-import { carro, carro2, carro3, user } from "../../setup";
+import { carroRepository, usuarioRepository } from "../../setup";
 import { jwt } from "@/infra/adapters/jwt";
+import { Carro, Usuario } from "@/core/models";
+import { newID } from "@/infra/adapters/newID";
+import { placaGenerator } from "@/utils/placa-generator";
+import { faker } from "@faker-js/faker";
 
 const path = `/carros`;
-const token = jwt.encode({ payload: { id: user.id } });
 
-describe.skip("Edit Carro - e2e Test", () => {
+describe("Edit Carro - e2e Test", () => {
+
+	const user: Usuario = {
+		id: newID(),
+		nome: faker.person.fullName(),
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+		email: faker.internet.email(),
+	}
+
+	const user2: Usuario = {
+		id: newID(),
+		nome: faker.person.fullName(),
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+		email: faker.internet.email(),
+	}
+
+	const carro: Carro = {
+		id: newID(),
+		placa: placaGenerator(),
+		modelo: faker.vehicle.model(),
+		marca: faker.vehicle.manufacturer(),
+		usuarioId: user.id,
+	};
+
+	const carro2: Carro = {
+		id: newID(),
+		placa: placaGenerator(),
+		modelo: faker.vehicle.model(),
+		marca: faker.vehicle.manufacturer(),
+		usuarioId: user2.id,
+	};
+
+	beforeAll(async () => {
+		await usuarioRepository.create(user);
+		await usuarioRepository.create(user2);
+		await carroRepository.create(carro);
+		await carroRepository.create(carro2);
+	});
+
+	const token = jwt.encode({ payload: {id: user.id}});
+
 	it("should edit a car", async () => {
 		const response = await supertest(app)
-			.put(`${path}/${carro2.id}`)
+			.put(`${path}/${carro.id}`)
 			.send({
-				placa: "BBB9876",
+				placa: placaGenerator(),
 				modelo: "Fiat",
 				marca: "Argo",
 			})
@@ -25,7 +70,7 @@ describe.skip("Edit Carro - e2e Test", () => {
 		const response = await supertest(app)
 			.put(`${path}/xyz`)
 			.send({
-				placa: "BBB9876",
+				placa: placaGenerator(),
 				modelo: "Fiat",
 				marca: "Argo",
 			})
@@ -36,9 +81,9 @@ describe.skip("Edit Carro - e2e Test", () => {
 
 	it("should return 404 if carro belongs to another user", async () => {
 		const response = await supertest(app)
-			.put(`${path}/${carro3.id}`)
+			.put(`${path}/${carro2.id}`)
 			.send({
-				placa: "BBB9876",
+				placa: placaGenerator(),
 				modelo: "Fiat",
 				marca: "Argo",
 			})
@@ -52,7 +97,7 @@ describe.skip("Edit Carro - e2e Test", () => {
 		const response = await supertest(app)
 			.put(`${path}/${carro2.id}`)
 			.send({
-				placa: "BBB9876",
+				placa: placaGenerator(),
 				modelo: "F",
 				marca: "A",
 			})
@@ -79,9 +124,9 @@ describe.skip("Edit Carro - e2e Test", () => {
 
 	it("should return 409 if pass existent placa on edit", async () => {
 		const response = await supertest(app)
-			.put(`${path}/${carro2.id}`)
+			.put(`${path}/${carro.id}`)
 			.send({
-				placa: carro.placa,
+				placa: carro2.placa,
 				modelo: "Fiat",
 				marca: "Argo",
 			})

@@ -21,17 +21,9 @@ describe("Get Usuario - e2e Test", () => {
 	const token = jwt.encode({ payload: { id: user.id } });
 
 	beforeAll(async () => {
-		await usuarioRepository.removeAll();
 		await usuarioRepository.create(user);
 	});
 
-	afterEach(async () => {
-	});
-
-	afterAll(async () => {
-		await usuarioRepository.removeAll();
-		await database.$disconnect();
-	});
 
 	it("should get a usuario", async () => {
 		const response = await supertest(app)

@@ -19,7 +19,6 @@ export const editCarroController = async (params: EditCarroControllerParams): Pr
 		}
 
 		const savedCarro = await repository.get(input.id);
-		console.log({savedCarro}, {input});
 
 		if((input.usuarioId !== savedCarro?.usuarioId) || !savedCarro) {
 			return notFound();

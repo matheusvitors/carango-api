@@ -64,13 +64,12 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 		try {
 			const { usuarioId, ...rest } = input;
 
-			await database.carro.create({
+			const result = await database.carro.create({
 				data: {
 					...rest,
 					usuario: {connect: { id: usuarioId }}
 				}
 			});
-
 		} catch (error) {
 			console.error(error);
 			throw error;

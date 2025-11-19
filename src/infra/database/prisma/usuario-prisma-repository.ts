@@ -17,8 +17,6 @@ export const usuarioPrismaRepository: Repository<Usuario, Usuario> = {
 		throw new Error("Function not implemented.");
 	},
 	create: async (data: Usuario): Promise<void> => {
-		console.log(data);
-
 		await database.usuario.create({ data })
 	},
 	edit: async (data: any): Promise<Usuario | null> => {

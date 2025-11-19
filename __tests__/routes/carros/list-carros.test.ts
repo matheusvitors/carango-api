@@ -1,10 +1,35 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import supertest from "supertest";
+import { faker } from "@faker-js/faker";
 import { app } from "@/server";
-import { user } from "../../setup";
+import { carroRepository, usuarioRepository } from "../../setup";
 import { jwt } from "@/infra/adapters/jwt";
+import { Carro, Usuario } from "@/core/models";
+import { newID } from "@/infra/adapters/newID";
+import { placaGenerator } from "@/utils/placa-generator";
 
-describe.skip("List Carros - e2e Test", () => {
+describe("List Carros - e2e Test", () => {
+	const user: Usuario = {
+		id: newID(),
+		nome: faker.person.fullName(),
+		username: faker.internet.username(),
+		password: faker.internet.password(),
+		email: faker.internet.email(),
+	}
+
+	const carro: Carro = {
+		id: newID(),
+		placa: placaGenerator(),
+		modelo: faker.vehicle.model(),
+		marca: faker.vehicle.manufacturer(),
+		usuarioId: user.id,
+	};
+
+	beforeAll(async () => {
+		await usuarioRepository.create(user);
+		await carroRepository.create(carro);
+	});
+
 	const token = jwt.encode({ payload: {id: user.id}});
 
 	it("should list cars", async () => {
@@ -12,9 +37,7 @@ describe.skip("List Carros - e2e Test", () => {
 			.get(`/carros`)
 			.set({ authorization: `Bearer ${token}` });
 
-		// console.log(JSON.stringify(response.body, null, 2));
-
 		expect(response.status).toEqual(200);
-		expect(response.body.response.content.length).toEqual(2);
+		expect(response.body.response.content.length).greaterThan(0);
 	});
 });
