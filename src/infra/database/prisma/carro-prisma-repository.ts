@@ -1,4 +1,5 @@
-import { Repository } from "@/application/interfaces";
+import { Prisma, PrismaPromise } from "@prisma/client";
+import { FilterParams, Repository } from "@/application/interfaces";
 import { Carro } from "@/core/models";
 import { database } from "@/infra/database/client";
 
@@ -39,21 +40,36 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 		return data;
 	},
 
-	filter: async (params: any): Promise<Carro[] | null> => {
-		throw new Error("Function not implemented.");
+	filter: async (params: FilterParams<Carro>[]): Promise<Carro[] | null> => {
+		const where: Prisma.CarroWhereInput = params.reduce(
+			(obj, item) => Object.assign(obj, { [item.field]: item.value }), {});
+
+		try {
+			const data = await database.carro.findMany({
+				where,
+			});
+
+			// const operacoes: Operacao[] = data.map(operacao => {
+			// 	return toOperacao(operacao);
+			// })
+
+			return data;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	create: async (input: Carro): Promise<void> => {
 		try {
 			const { usuarioId, ...rest } = input;
 
-			await database.carro.create({
+			const result = await database.carro.create({
 				data: {
 					...rest,
 					usuario: {connect: { id: usuarioId }}
 				}
 			});
-
 		} catch (error) {
 			console.error(error);
 			throw error;

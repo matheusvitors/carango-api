@@ -1,16 +1,17 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
-import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { abastecimentoRepository, carroRepository, usuarioRepository } from "../../setup";
-import { Abastecimento, Carro, Usuario } from "@/core/models";
+import { jwt } from "@/infra/adapters/jwt";
+import { carroRepository, usuarioRepository } from "../../setup";
+import { Carro, Usuario } from "@/core/models";
 import { newID } from "@/infra/adapters/newID";
 import { placaGenerator } from "@/utils/placa-generator";
 
-const path = '/carros'
+const path = `/carros`;
 
-describe('Get Abastecimento - Integration Test', () => {
+describe('Delete Carro - e2e Test', () => {
+
 	const user: Usuario = {
 		id: newID(),
 		nome: faker.person.fullName(),
@@ -27,37 +28,25 @@ describe('Get Abastecimento - Integration Test', () => {
 		usuarioId: user.id,
 	};
 
-	const abastecimento: Abastecimento = {
-		id: newID(),
-		carroId: carro.id,
-		kmInicial: 0,
-		kmFinal: 50,
-		litros: 5,
-		precoCombustivel: 2.0,
-		combustivel: "gasolina",
-		tipoCombustivel: "comum",
-		data: new Date(),
-	}
-
 	beforeAll(async () => {
 		await usuarioRepository.create(user);
 		await carroRepository.create(carro);
-		await abastecimentoRepository.create(abastecimento);
 	});
 
 	const token = jwt.encode({ payload: {id: user.id}});
 
-	it('should get the refueling', async () => {
+
+	it('should delete the car', async () => {
 		const response = await supertest(app)
-		.get(`${path}/abastecimentos/${abastecimento.id}`)
+		.delete(`${path}/${carro.id}`)
 		.set({ authorization: `Bearer ${token}`});
 
-		expect(response.status).toEqual(200);
+		expect(response.status).toEqual(200)
 	});
 
-	it('should not find the refueling', async () => {
+	it('should not find the car on delete', async () => {
 		const response = await supertest(app)
-		.get(`${path}/abastecimentos/oigfg`)
+		.delete(`${path}/xyz`)
 		.set({ authorization: `Bearer ${token}`});
 
 		expect(response.status).toEqual(404)

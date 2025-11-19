@@ -4,14 +4,16 @@ import { notFound, serverError, success } from "@/infra/adapters/response-wrappe
 
 interface GetCarroControllerParams {
 	repository: Repository<Carro, Carro>;
+	usuarioId: string;
 	id: string;
 }
 
 export const getCarroController = async (params: GetCarroControllerParams): Promise<ResponseData> => {
 	try {
-		const { repository, id } = params;
+		const { repository, id, usuarioId } = params;
 		const carro = await repository.get(id);
-		if(!carro){
+
+		if(!carro || carro?.usuarioId !== usuarioId){
 			return notFound();
 		}
 

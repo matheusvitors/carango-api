@@ -9,14 +9,18 @@ const repository = carroPrismaRepository;
 const path = '/carros'
 
 router.get(`${path}`, async (request: Request, response: Response) => {
-	const responseData = await listCarrosController(repository);
+	const responseData = await listCarrosController({
+		repository,
+		usuarioId: extractUserId(request.headers['authorization']?.split(' ')[1])
+	});
 	route({ response, responseData });
 })
 
 router.get(`${path}/:id`, async (request: Request, response: Response) => {
 	const responseData = await getCarroController({
 		repository,
-		id: request.params.id
+		id: request.params.id,
+		usuarioId: extractUserId(request.headers['authorization']?.split(' ')[1])
 	});
 	route({ response, responseData });
 })
@@ -34,11 +38,11 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 	route({ response, responseData });
 })
 
-router.put(`${path}`, async (request: Request, response: Response) => {
+router.put(`${path}/:id`, async (request: Request, response: Response) => {
 	const responseData = await editCarroController({
 		repository,
 		input: {
-			id: request.body.id,
+			id: request.params.id,
 			placa: request.body.placa,
 			marca: request.body.marca,
 			modelo: request.body.modelo,

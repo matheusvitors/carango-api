@@ -26,14 +26,18 @@ export const jwt = {
 	},
 
 	verify: (jwt: string): JwtPayload => {
-		if (SECRET) {
-			const data = Jwt.verify(jwt, SECRET);
-			if(typeof data === 'string') {
-				return JSON.parse(data);
+		try {
+			if (SECRET) {
+				const data = Jwt.verify(jwt, SECRET);
+				if(typeof data === 'string') {
+					return JSON.parse(data);
+				}
+				return data;
+			} else {
+				throw new JwtError('A secret must be specified.');
 			}
-			return data;
-		} else {
-			throw new JwtError('A secret must be specified.');
+		} catch (error) {
+			throw error;
 		}
 
 	}

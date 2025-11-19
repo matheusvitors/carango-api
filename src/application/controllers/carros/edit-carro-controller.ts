@@ -1,7 +1,7 @@
 import { Repository, ResponseData } from "@/application/interfaces"
 import { Carro } from "@/core/models"
 import { carroValidator } from "@/core/validators";
-import { conflict, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
+import { conflict, notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
 
 interface EditCarroControllerParams {
 	repository: Repository<Carro, Carro>;
@@ -18,9 +18,15 @@ export const editCarroController = async (params: EditCarroControllerParams): Pr
 			return unprocessableEntity(errors as object);
 		}
 
+		const savedCarro = await repository.get(input.id);
+
+		if((input.usuarioId !== savedCarro?.usuarioId) || !savedCarro) {
+			return notFound();
+		}
+
 		const result = await repository.find!('placa', input.placa);
 
-		if(result){
+		if(result && result.id !== input.id){
 			return conflict('Placa já existente!');
 		}
 

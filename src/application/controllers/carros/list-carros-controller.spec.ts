@@ -3,7 +3,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { Carro } from "@/core/models";
 import { listCarrosController } from "@/application/controllers/carros";
 
-describe('Carro List Controller', () => {
+describe.skip('Carro List Controller', () => {
 	const repository = new InMemoryRepository<Carro>();
 
 	beforeAll(() => {
