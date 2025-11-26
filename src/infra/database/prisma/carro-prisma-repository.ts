@@ -16,10 +16,10 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 	get: async (id: string): Promise<Carro | null> => {
 		try {
 			const data = await database.carro.findUnique({
-				where: {id},
-			})
+				where: { id },
+			});
 
-			if(!data) {
+			if (!data) {
 				return null;
 			}
 
@@ -31,9 +31,9 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 	},
 
 	find: async (field: keyof Carro, value: any): Promise<Carro | null> => {
-		const data = await database.carro.findFirst({ where: {[field]: value}});
+		const data = await database.carro.findFirst({ where: { [field]: value } });
 
-		if(!data) {
+		if (!data) {
 			return null;
 		}
 
@@ -41,17 +41,10 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 	},
 
 	filter: async (params: FilterParams<Carro>[]): Promise<Carro[] | null> => {
-		const where: Prisma.CarroWhereInput = params.reduce(
-			(obj, item) => Object.assign(obj, { [item.field]: item.value }), {});
-
 		try {
 			const data = await database.carro.findMany({
-				where,
+				where: { AND: params as Prisma.CarroWhereInput},
 			});
-
-			// const operacoes: Operacao[] = data.map(operacao => {
-			// 	return toOperacao(operacao);
-			// })
 
 			return data;
 		} catch (error) {
@@ -67,8 +60,8 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 			const result = await database.carro.create({
 				data: {
 					...rest,
-					usuario: {connect: { id: usuarioId }}
-				}
+					usuario: { connect: { id: usuarioId } },
+				},
 			});
 		} catch (error) {
 			console.error(error);
@@ -82,12 +75,12 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 			const result = await database.carro.update({
 				data: {
 					...rest,
-					usuario: {connect: {id: usuarioId }}
+					usuario: { connect: { id: usuarioId } },
 				},
 				include: { usuario: true },
 				where: {
-					id: input.id
-				}
+					id: input.id,
+				},
 			});
 			return result;
 		} catch (error) {
@@ -98,7 +91,7 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 
 	remove: async (id: string): Promise<void> => {
 		try {
-			await database.carro.delete({where: {id}})
+			await database.carro.delete({ where: { id } });
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -107,10 +100,10 @@ export const carroPrismaRepository: Repository<Carro, Carro> = {
 
 	removeAll: async () => {
 		try {
-			await database.carro.deleteMany({})
+			await database.carro.deleteMany({});
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
-	}
-}
+	},
+};

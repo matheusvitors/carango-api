@@ -40,4 +40,24 @@ describe("List Carros - e2e Test", () => {
 		expect(response.status).toEqual(200);
 		expect(response.body.response.content.length).greaterThan(0);
 	});
+
+	it("should return a empty array if has no cars", async () => {
+		const user0: Usuario = {
+			id: newID(),
+			nome: faker.person.fullName(),
+			username: faker.internet.username(),
+			password: faker.internet.password(),
+			email: faker.internet.email(),
+		}
+
+		await usuarioRepository.create(user0);
+		const token = jwt.encode({ payload: {id: user0.id}});
+
+		const response = await supertest(app)
+			.get(`/carros`)
+			.set({ authorization: `Bearer ${token}` });
+
+		expect(response.status).toEqual(200);
+		expect(response.body.response.content.length).toEqual(0);
+	});
 });

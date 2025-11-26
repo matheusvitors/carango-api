@@ -11,6 +11,7 @@ export const listCarrosController = async (params: ListCarrosControllerParams): 
 	try {
 		const { repository, usuarioId } = params;
 		const carros = await repository.filter!([{usuarioId}]);
+
 		return success(carros);
 	} catch (error) {
 		console.error(error)
