@@ -22,9 +22,8 @@ export const refreshTokenController = async (params: RefreshTokenControllerParam
 			return unauthorized();
 		}
 
-		const access_token = jwt.encode({payload: { id: usuario.id }, expiration: '7d'});
+		const access_token = jwt.encode({payload: {auth: true, id: usuario.id, expiration: '6h'}});
 
-		//caso o usuário exista gere um novo access-token
 		return success({ access_token });
 	} catch (error: any) {
 		if(error.name === 'TokenExpiredError' ||
